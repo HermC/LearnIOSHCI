@@ -35,7 +35,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self setupCamera];
+    //[self setupCamera];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -74,6 +74,7 @@
     
     // Output
     self.output = [[AVCaptureMetadataOutput alloc] init];
+    //[self.output setMetadataObjectTypes:@[AVMetadataObjectTypeQRCode,AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code]];
     [self.output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
     
     // Session
@@ -83,11 +84,13 @@
     {
         [self.session addInput:self.input];
     }
+    
+//    NSLog(@"output = %@", self.output);
+    
     if ([self.session canAddOutput:self.output])
     {
         [self.session addOutput:self.output];
     }
-    
     self.output.metadataObjectTypes = @[AVMetadataObjectTypeQRCode];
     
     // Preview
@@ -101,7 +104,7 @@
 
 #pragma mark - AVCaptureMetadataOutputObjectsDelegate
 
--    (void)captureOutput:(AVCaptureOutput *)captureOutput
+- (void)captureOutput:(AVCaptureOutput *)captureOutput
 didOutputMetadataObjects:(NSArray *)metadataObjects
           fromConnection:(AVCaptureConnection *)connection
 {

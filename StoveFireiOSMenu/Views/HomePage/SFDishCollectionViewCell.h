@@ -29,6 +29,8 @@ typedef NS_ENUM(NSInteger, SFDishCellMode) {
 @property (weak, nonatomic) IBOutlet UIButton *cartButton;
 @property (weak, nonatomic) IBOutlet UIImageView *cartIcon;
 
+@property (weak, nonatomic) IBOutlet UILabel *dishNum;
+
 @property (weak, nonatomic) id controller;
 @property (weak, nonatomic) UICollectionView *collectionView;
 @property (assign, nonatomic) SFDishCellMode cellMode;

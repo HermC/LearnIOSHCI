@@ -176,6 +176,8 @@
                         change:(NSDictionary *)change
                        context:(void *)context
 {
+    NSLog(@"observeValue");
+    
     if ([keyPath isEqualToString:NSStringFromSelector(@selector(cartList))]
         && [change[NSKeyValueChangeKindKey] intValue] == NSKeyValueChangeRemoval)
     {
@@ -193,6 +195,26 @@
             }
         }
     }
+    
+//    if ([keyPath isEqualToString:NSStringFromSelector(@selector(cartList))]
+//        && [change[NSKeyValueChangeKindKey] intValue] == NSKeyValueChangeInsertion)
+//    {
+//        NSLog(@"change insertion");
+//        NSArray *insertionItems = change[NSKeyValueChangeOldKey];
+//        for (SFOrderItem *item in insertionItems)
+//        {
+//            SFDishItem *dish = [[SFDataManager sharedInstance].dishes objectForKey:item.itemid];
+//            for (SFDishesViewController *controller in self.contentViewControllers)
+//            {
+//                if ([dish.classid integerValue] == [controller.dishClass.classid integerValue])
+//                {
+////                    [controller updateDishCellByDishItem:dish];
+//                    NSLog(@"change insertion");
+//                    break;
+//                }
+//            }
+//        }
+//    }
 }
 
 @end

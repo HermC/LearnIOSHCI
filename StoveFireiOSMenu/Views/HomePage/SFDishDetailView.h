@@ -23,4 +23,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *inCartFlag;
 @property (weak, nonatomic) IBOutlet UIImageView *cartIcon;
 
+@property (weak, nonatomic) IBOutlet UILabel *dishNum;
+
 @end

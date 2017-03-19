@@ -66,6 +66,7 @@
 
 - (void)updateDishCellByDishItem:(SFDishItem *)item
 {
+    NSLog(@"updateDishCellByDishItem");
     NSUInteger index = [self.dishClass.dishes indexOfObjectIdenticalTo:item];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index + 1 inSection:0];
     [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
@@ -122,6 +123,19 @@
         
         cell.dishName.text = item.name;
         cell.dishEnglishName.text = item.englishName;
+        
+        int dishNum = [self getDishCount:item];
+        NSLog(@"dishNum: %d", dishNum);
+        if (dishNum == 0)
+        {
+            cell.dishNum.hidden = YES;
+        }
+        else
+        {
+            cell.dishNum.hidden = NO;
+            cell.dishNum.text = [NSString stringWithFormat:@"已下单: %d份", dishNum];
+        }
+        
         UIImage *dishItemImage = [[SFImageManager sharedInstance] imageForKey:item.imageKey];
         if (!dishItemImage)
         {
@@ -189,6 +203,20 @@
     }
 }
 
+- (int)getDishCount:(SFDishItem *)dish
+{
+    if (dish.inCart) {
+        for (SFOrderItem *item in [SFOrderManager sharedInstance].cart)
+        {
+            if ([item.itemid integerValue] == [dish.itemid integerValue])
+            {
+                return [item.count intValue];
+            }
+        }
+    }
+    return 0;
+}
+
 #pragma mark - Target-Action in Collection View
 
 - (void)onCartButtonClickedInCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
@@ -197,6 +225,18 @@
     [self addToCart:item];
     
     SFDishCollectionViewCell *cell = (SFDishCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    
+//    int dishNum = [self getDishCount:item];
+//    NSLog(@"onCart: %d", dishNum);
+//    if (dishNum == 0)
+//    {
+//        cell.dishNum.hidden = YES;
+//    }
+//    else
+//    {
+//        cell.dishNum.hidden = NO;
+//        cell.dishNum.text = [NSString stringWithFormat:@"已下单: %d份", dishNum];
+//    }
     cell.cartButton.userInteractionEnabled = NO;
     UIImageView *dishImage = [[UIImageView alloc] initWithImage:cell.dishImage.image];
     dishImage.frame = cell.dishImage.frame;
@@ -206,6 +246,7 @@
             completion:^{
                 [cell showCellMode:SFDishCellModeInCart animate:YES];
                 cell.cartButton.userInteractionEnabled = YES;
+                [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
     }];
 }
 
@@ -239,6 +280,18 @@
         self.dishDetailView.dishIngredient.selectable = YES;
         self.dishDetailView.dishIngredient.text = [item.ingredient stringByReplacingOccurrencesOfString: @"\\n" withString: @"\n"];
         self.dishDetailView.dishIngredient.selectable = NO;
+        
+        int dishNum = [self getDishCount:item];
+        if (dishNum == 0)
+        {
+            self.dishDetailView.dishNum.hidden = YES;
+        }
+        else
+        {
+            self.dishDetailView.dishNum.hidden = NO;
+            self.dishDetailView.dishNum.text = [NSString stringWithFormat:@"已下单: %d份", dishNum];
+        }
+        
         UIImage *dishItemImage = [[SFImageManager sharedInstance] imageForKey:item.imageKey];
         if (!dishItemImage)
         {
@@ -267,7 +320,7 @@
         [[SFProjectorManager sharedInstance] doAction:SFProjectorActionPlay withName:item.name];
         [CRModal showModalView:self.dishDetailView
                    coverOption:CRModalOptionCoverDark
-           tapOutsideToDismiss:NO
+           tapOutsideToDismiss:YES
                       animated:YES
                     completion:^{
                         self.selectedIndexPath = nil;
@@ -283,6 +336,17 @@
 {
     SFDishItem *item = [self.dishClass.dishes objectAtIndex:self.selectedIndexPath.row - 1];
     [self addToCart:item];
+    
+    int dishNum = [self getDishCount:item];
+    if (dishNum == 0)
+    {
+        self.dishDetailView.dishNum.hidden = YES;
+    }
+    else
+    {
+        self.dishDetailView.dishNum.hidden = NO;
+        self.dishDetailView.dishNum.text = [NSString stringWithFormat:@"已下单: %d份", dishNum];
+    }
     
     self.dishDetailView.cartButton.userInteractionEnabled = NO;
     UIImageView *dishImage = [[UIImageView alloc] initWithImage:self.dishDetailView.dishImage.image];
