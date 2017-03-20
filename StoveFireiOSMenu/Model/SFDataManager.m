@@ -322,6 +322,7 @@
         class.name = [names objectAtIndex:i];
         class.englishName = [englishNames objectAtIndex:i];
         class.imageKey = [NSString stringWithFormat:@"0-%d@%.0f", i, [[NSDate date] timeIntervalSince1970]];
+        NSLog(@"imageKey: %@", class.imageKey);
         [array addObject:class];
     }
     
@@ -356,6 +357,7 @@
     NSArray *names = kSFDishClassName;
     NSArray *englishNames = kSFDishClassEnglishName;
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:[names count] * 10];
+//    int num = 0;
     for (int i = 0; i < [names count]; i++)
     {
         int count = 8 + arc4random() % 6;
@@ -367,7 +369,7 @@
             item.vip = [NSNumber numberWithBool:FALSE];
             item.name = [NSString stringWithFormat:@"%@_%d", [names objectAtIndex:i], j];
             item.englishName = [NSString stringWithFormat:@"%@_%d", [englishNames objectAtIndex:i], j];
-            item.imageKey = [NSString stringWithFormat:@"1-%d@%.0f", j, [[NSDate date] timeIntervalSince1970]];
+            item.imageKey = [NSString stringWithFormat:@"1-%d-%d@%.0f", i, j, [[NSDate date] timeIntervalSince1970]];
             item.thumbnailKey = [NSString stringWithFormat:@"2-%d@%.0f", j, [[NSDate date] timeIntervalSince1970]];
             item.showSequence = [NSNumber numberWithInteger:j + 1];
             item.price = [NSNumber numberWithFloat:20 + arc4random() % 100];

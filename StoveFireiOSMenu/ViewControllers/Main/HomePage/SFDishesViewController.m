@@ -66,7 +66,6 @@
 
 - (void)updateDishCellByDishItem:(SFDishItem *)item
 {
-    NSLog(@"updateDishCellByDishItem");
     NSUInteger index = [self.dishClass.dishes indexOfObjectIdenticalTo:item];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index + 1 inSection:0];
     [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
@@ -203,20 +202,11 @@
     {
         SFOrderItem *item = [[SFOrderItem alloc] initWithItemid:dish.itemid];
         [[SFOrderManager sharedInstance].cart addObject:item];
-        
-//        NSUInteger index = [self.dishClass.dishes indexOfObjectIdenticalTo:item];
-//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index + 1 inSection:0];
-//        
-//        SFDishCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SFDishCollectionViewCell"
-//                                                                                   forIndexPath:indexPath];
     
         [item addObserver:self
                forKeyPath:NSStringFromSelector(@selector(count))
                   options:NSKeyValueObservingOptionNew
                   context:nil];
-        
-        
-//        item.count = [NSNumber numberWithInteger:2];
     }
 }
 
@@ -355,6 +345,8 @@
 {
     SFDishItem *item = [self.dishClass.dishes objectAtIndex:self.selectedIndexPath.row - 1];
     [self addToCart:item collectionView:self.collectionView];
+    
+    NSLog(@"itemImageKey: %@", item.imageKey);
     
     int dishNum = [self getDishCount:item];
     if (dishNum == 0)
