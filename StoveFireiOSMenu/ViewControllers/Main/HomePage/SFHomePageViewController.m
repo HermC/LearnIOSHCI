@@ -176,8 +176,6 @@
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    NSLog(@"observeValue");
-    
     if ([keyPath isEqualToString:NSStringFromSelector(@selector(cartList))]
         && [change[NSKeyValueChangeKindKey] intValue] == NSKeyValueChangeRemoval)
     {
@@ -189,6 +187,7 @@
             {
                 if ([dish.classid integerValue] == [controller.dishClass.classid integerValue])
                 {
+                    [item removeObserver:controller forKeyPath:NSStringFromSelector(@selector(count))];
                     [controller updateDishCellByDishItem:dish];
                     break;
                 }

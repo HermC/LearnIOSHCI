@@ -24,5 +24,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *cartIcon;
 
 @property (weak, nonatomic) IBOutlet UILabel *dishNum;
+@property (weak, nonatomic) UICollectionView *collectionView;
 
 @end

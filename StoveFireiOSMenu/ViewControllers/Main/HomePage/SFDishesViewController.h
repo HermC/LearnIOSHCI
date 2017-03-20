@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CHTCollectionViewWaterfallLayout.h"
+#import "SFDataManager.h"
 
 @class SFDishItem;
 @class SFDishClass;

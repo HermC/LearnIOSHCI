@@ -54,7 +54,7 @@
         // [self.controller performSelector:selector
         //                       withObject:self.collectionView
         //                       withObject:indexPath];
-        NSLog(@"indexPath: %d", indexPath);
+//        NSLog(@"indexPath: %d", indexPath);
         IMP imp = [self.controller methodForSelector:selector];
         void (*func)(id, SEL, UICollectionView *, NSIndexPath *) = (void *)imp;
         func(self.controller, selector, self.collectionView, indexPath);
@@ -135,5 +135,4 @@
             break;
     }
 }
-
 @end

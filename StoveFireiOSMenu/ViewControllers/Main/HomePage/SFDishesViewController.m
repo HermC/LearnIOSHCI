@@ -125,7 +125,7 @@
         cell.dishEnglishName.text = item.englishName;
         
         int dishNum = [self getDishCount:item];
-        NSLog(@"dishNum: %d", dishNum);
+//        NSLog(@"dishNum: %d", dishNum);
         if (dishNum == 0)
         {
             cell.dishNum.hidden = YES;
@@ -184,6 +184,7 @@
 #pragma mark - Functional
 
 - (void)addToCart:(SFDishItem *)dish
+   collectionView:(UICollectionView *)collectionView
 {
     if (dish.inCart)
     {
@@ -191,7 +192,9 @@
         {
             if ([item.itemid integerValue] == [dish.itemid integerValue])
             {
-                item.count = [NSNumber numberWithInteger:[item.count integerValue] + 1];
+                long num = [item.count integerValue] + 1;
+                item.count = [NSNumber numberWithInteger:num];
+                [item setValue:[NSNumber numberWithInteger:num] forKey:NSStringFromSelector(@selector(count))];
                 break;
             }
         }
@@ -200,6 +203,20 @@
     {
         SFOrderItem *item = [[SFOrderItem alloc] initWithItemid:dish.itemid];
         [[SFOrderManager sharedInstance].cart addObject:item];
+        
+//        NSUInteger index = [self.dishClass.dishes indexOfObjectIdenticalTo:item];
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index + 1 inSection:0];
+//        
+//        SFDishCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SFDishCollectionViewCell"
+//                                                                                   forIndexPath:indexPath];
+    
+        [item addObserver:self
+               forKeyPath:NSStringFromSelector(@selector(count))
+                  options:NSKeyValueObservingOptionNew
+                  context:nil];
+        
+        
+//        item.count = [NSNumber numberWithInteger:2];
     }
 }
 
@@ -222,7 +239,7 @@
 - (void)onCartButtonClickedInCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
 {
     SFDishItem *item = [self.dishClass.dishes objectAtIndex:indexPath.row - 1];
-    [self addToCart:item];
+    [self addToCart:item collectionView:collectionView];
     
     SFDishCollectionViewCell *cell = (SFDishCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     
@@ -281,6 +298,8 @@
         self.dishDetailView.dishIngredient.text = [item.ingredient stringByReplacingOccurrencesOfString: @"\\n" withString: @"\n"];
         self.dishDetailView.dishIngredient.selectable = NO;
         
+        self.dishDetailView.collectionView = collectionView;
+        
         int dishNum = [self getDishCount:item];
         if (dishNum == 0)
         {
@@ -335,7 +354,7 @@
 - (IBAction)onCartButtonClickedInDishDetailView:(id)sender
 {
     SFDishItem *item = [self.dishClass.dishes objectAtIndex:self.selectedIndexPath.row - 1];
-    [self addToCart:item];
+    [self addToCart:item collectionView:self.collectionView];
     
     int dishNum = [self getDishCount:item];
     if (dishNum == 0)
@@ -468,6 +487,25 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error){
         NSLog(@"%@", error);
     }];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    
+    if ([keyPath isEqualToString:NSStringFromSelector(@selector(count))]
+        && [change[NSKeyValueChangeKindKey] intValue] == NSKeyValueChangeSetting)
+    {
+        SFOrderItem *orderItem = object;
+        SFDishItem *dishItem = [[SFDataManager sharedInstance].dishes objectForKey:orderItem.itemid];
+        
+        if ([dishItem.classid integerValue] == [self.dishClass.classid integerValue])
+        {
+            [self updateDishCellByDishItem:dishItem];
+        }
+    }
 }
 
 @end
