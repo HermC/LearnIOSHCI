@@ -95,7 +95,7 @@ typedef NS_ENUM(NSInteger, SFMainChildViewControllerIndex)
     self.tabBar = [[CRTabBar alloc] init];
     self.tabBar.delegate = self;
     self.tabBar.backgroundImage = [[RNThemeManager sharedManager] imageForKey:@"tabbar_background.png"];
-    NSArray *titles = @[@"点 餐", @"起 源", @"问 卷", @"已点菜品", @"我的炉火"];
+    NSArray *titles = @[@"点餐首页", @"起 源", @"问 卷", @"已点菜品", @"我的炉火"];
     NSArray *prefix = @[@"homepage", @"origin", @"questionnaire", @"order", @"myself"];
     NSMutableArray *items = [NSMutableArray arrayWithCapacity:[titles count]];
     [titles enumerateObjectsUsingBlock:^(NSString *title, NSUInteger index, BOOL *stop){

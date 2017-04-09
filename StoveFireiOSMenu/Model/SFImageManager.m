@@ -80,7 +80,7 @@
     }
     else if ([imageClass isEqualToString:@"1"])
     {
-        image = [UIImage imageNamed:@"default_dish_item"];
+        image = [UIImage imageNamed:@"愛媛縣油甘魚刺身H"];
     }
     else if ([imageClass isEqualToString:@"2"])
     {

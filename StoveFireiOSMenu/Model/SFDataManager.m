@@ -322,7 +322,6 @@
         class.name = [names objectAtIndex:i];
         class.englishName = [englishNames objectAtIndex:i];
         class.imageKey = [NSString stringWithFormat:@"0-%d@%.0f", i, [[NSDate date] timeIntervalSince1970]];
-        NSLog(@"imageKey: %@", class.imageKey);
         [array addObject:class];
     }
     

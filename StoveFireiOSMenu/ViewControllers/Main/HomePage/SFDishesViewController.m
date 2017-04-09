@@ -138,6 +138,7 @@
         UIImage *dishItemImage = [[SFImageManager sharedInstance] imageForKey:item.imageKey];
         if (!dishItemImage)
         {
+            NSLog(@"this dish item %@", dishItemImage);
             dishItemImage = [UIImage imageNamed:@"default_dish_item"];
         }
         cell.dishImage.image = dishItemImage;
@@ -397,7 +398,7 @@
 
 - (IBAction)onTapOnDishImageInDishDetailView:(id)sender
 {
-    [CRModal dismiss];
+//    [CRModal dismiss];
 }
 
 #pragma mark - Animation

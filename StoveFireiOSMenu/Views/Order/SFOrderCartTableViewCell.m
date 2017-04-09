@@ -13,7 +13,7 @@
 - (void)awakeFromNib
 {
     self.contentView.backgroundColor = [[RNThemeManager sharedManager] colorForKey:@"BackgroundColor"];
-    self.backgroundImageView.image = [[RNThemeManager sharedManager] imageForKey:@"order_cell_background.png"];
+    self.backgroundImageView.image = [[RNThemeManager sharedManager] imageForKey:@"order_cell_background_2.png"];
     self.backgroundImageView.backgroundColor = [[RNThemeManager sharedManager] colorForKey:@"BackgroundColor"];
 }
 
